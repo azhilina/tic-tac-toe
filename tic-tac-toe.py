@@ -2,8 +2,9 @@
 
 import math
 
-line = input()
+# line = input()
 # line = 'XOXOOXXXO'
+line = '         '
 
 print('---------')
 i = 0
@@ -19,10 +20,6 @@ def nums(a, input):
     for i in new_line:
         number = number + i
     return number
-    
-x = nums('X',line)
-o = nums('O',line)
-l = math.fabs(nums('X',line)-nums('O',line))
 
 # this function returns the winner
 def win(a, input):
@@ -37,18 +34,108 @@ def win(a, input):
     (nl[2] + nl[4] + nl[6] == 3)):
         return True
 
-win('X', line)
-win('O', line)
+# this function takes c(the list of two coodinates) and the list of values as a parameter
+# and returns true if this coordinate is occupied with 'X' or 'O'
+def place(c,inp):
+    cond = False
+    number = 3 * (int(c[0]) - 1) + (int(c[1]) - 1)
+    if (inp[number] == "X" or inp[number] == 'O'):
+        cond = True
+    return cond
 
-if (l > 1):
-    print('Impossible')
-elif(win('X', line) and win('O', line)):
-    print('Impossible')
-elif (win('X', line)):
-    print('X','wins')
-elif (win('O', line)):
-    print('O','wins')
-elif ((x + o) < 9):
-    print('Game not finished')
-elif ((x + o) == 9):
-    print('Draw')
+exit_line = line    
+
+finish = True
+
+while(finish):
+    step = True
+    while(step):
+        k = input().split(' ')
+        if (k[0] in ['1','2','3'] and k[1] in ['1','2','3']):
+            if (not place(k, exit_line)):
+                step = False
+                number = 3 * (int(k[0]) - 1) + (int(k[1]) - 1)
+                exit_line = []
+                l = 0
+                while (l < 9):
+                    if l == number:
+                        exit_line.append('X')
+                        l = l + 1
+                    else:
+                        exit_line.append(line[l])
+                        l = l + 1
+            else:
+                print('This cell is occupied! Choose another one!')
+        elif (k[0].isdigit() and k[1].isdigit()):
+            print('Coordinates should be from 1 to 3!')
+        else:
+            print('You should enter numbers!')
+
+
+    print('---------')
+    i = 0
+    while i < 9:
+        print('|',exit_line[i],exit_line[i + 1],exit_line[i + 2],'|')
+        i = i + 3
+    print('---------')
+
+    x = nums('X',exit_line)
+    o = nums('O',exit_line)
+    l = math.fabs(nums('X',exit_line)-nums('O',exit_line))
+
+    line = exit_line
+    if (win('X', exit_line)):
+        print('X','wins')
+        break
+    elif (win('O', exit_line)):
+        print('O','wins')
+        break
+    elif ((x + o) == 9):
+        print('Draw')
+        break
+
+    step = True
+    while(step):
+        k = input().split(' ')
+        if (k[0] in ['1','2','3'] and k[1] in ['1','2','3']):
+            if (not place(k, exit_line)):
+                step = False
+                number = 3 * (int(k[0]) - 1) + (int(k[1]) - 1)
+                exit_line = []
+                l = 0
+                while (l < 9):
+                    if l == number:
+                        exit_line.append('O')
+                        l = l + 1
+                    else:
+                        exit_line.append(line[l])
+                        l = l + 1
+            else:
+                print('This cell is occupied! Choose another one!')
+        elif (k[0].isdigit() and k[1].isdigit()):
+            print('Coordinates should be from 1 to 3!')
+        else:
+            print('You should enter numbers!')
+
+
+    print('---------')
+    i = 0
+    while i < 9:
+        print('|',exit_line[i],exit_line[i + 1],exit_line[i + 2],'|')
+        i = i + 3
+    print('---------')
+
+    x = nums('X',exit_line)
+    o = nums('O',exit_line)
+    l = math.fabs(nums('X',exit_line)-nums('O',exit_line))
+    line = exit_line
+
+    if (win('X', exit_line)):
+        print('X','wins')
+        break
+    elif (win('O', exit_line)):
+        print('O','wins')
+        break
+    elif ((x + o) == 9):
+        print('Draw')
+        break
